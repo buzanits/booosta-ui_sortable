@@ -35,7 +35,7 @@ trait webapp
     return '';
   }
 
-  protected function action_sort()
+  protected function action_sort_sortable()
   {
     $sortclause = str_replace('{id}', $this->id, $this->sortclause);
     $sortclause = preg_replace_callback('/\{([A-Za-z0-9_]+)\}/', function($m) { return $this->replace_sortvar($m[1]); }, $sortclause);

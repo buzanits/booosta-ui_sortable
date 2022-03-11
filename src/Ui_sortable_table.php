@@ -2,16 +2,18 @@
 namespace booosta\ui_sortable;
 
 
-class UI_sortable_table extends \booosta\tablelister\Tablelister
+class Ui_sortable_table extends \booosta\tablelister\Tablelister
 {
   protected $ajaxurl;
 
-  public function __construct($data, $tabletags = true, $use_datatable = false)
+  public function __construct($data, $tabletags = true, $use_datatable = false, $ajaxurl = null)
   {
     parent::__construct($data, $tabletags, $use_datatable);
 
     $this->tbody_class = 'js-sortable-table';
     $this->tr_class = 'js-sortable-tr';
+
+    if($ajaxurl) $this->ajaxurl = $ajaxurl;
   }
 
   public function after_instanciation()

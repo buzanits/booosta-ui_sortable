@@ -16,7 +16,9 @@ class UI_Sortable extends \booosta\ui\UI
     parent::__construct();
     $this->id = "ui_sortable_$name";
     if($content !== null) $this->content = $content;
-    if($ajaxurl !== null) $this->ajaxurl = $ajaxurl;
+
+    if($ajaxurl === true) $this->ajaxurl = '?action=sort_sortable';
+    elseif($ajaxurl !== null) $this->ajaxurl = $ajaxurl;
   }
 
   public function after_instanciation()

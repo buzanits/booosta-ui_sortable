@@ -1,0 +1,29 @@
+{
+    "name": "booosta/ui_sortable",
+    "description": "Sortable tables for webapplications in the Booosta Framework",
+    "license": "LGPL-3.0-only",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "booosta\\ui_sortable\\": "src"
+        }
+    },
+    "authors": [
+        {
+            "name": "Peter Buzanits",
+            "email": "peter@icb.at"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=8.0.0",
+        "npm-asset/html5sortable": "^0.13",
+        "booosta/ui": "dev-master"
+    }
+}

@@ -11,13 +11,15 @@ class UI_Sortable extends \booosta\ui\UI
   protected $content = [];
   protected $ajaxurl;
 
-  public function __construct($name = null, $content = null, $ajaxurl = null)
+  public function __construct($name = null, $content = null, $ajaxurl = null, $script = null)
   {
     parent::__construct();
     $this->id = "ui_sortable_$name";
     if($content !== null) $this->content = $content;
 
-    if($ajaxurl === true) $this->ajaxurl = '?action=sort_sortable';
+    if($script === null) $script = "$name.php";
+
+    if($ajaxurl === true) $this->ajaxurl = "$script?action=sort_sortable";
     elseif($ajaxurl !== null) $this->ajaxurl = $ajaxurl;
   }
 

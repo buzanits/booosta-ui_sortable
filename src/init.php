@@ -1,7 +1,8 @@
 <?php
 namespace booosta\ui_sortable;
 
-\booosta\Framework::add_module_trait('webapp', 'ui_sortable\webapp');
+use \booosta\Framework as b;
+b::add_module_trait('webapp', 'ui_sortable\webapp');
 
 trait webapp
 {
@@ -37,11 +38,12 @@ trait webapp
 
   protected function action_sort_sortable()
   {
+    #b::debug("sortclause: $this->sortclause");
     $sortclause = str_replace('{id}', $this->id, $this->sortclause);
     $sortclause = preg_replace_callback('/\{([A-Za-z0-9_]+)\}/', function($m) { return $this->replace_sortvar($m[1]); }, $sortclause);
     $sortclause = $sortclause ?: '1';
     #debug("this->sortclause: $this->sortclause");
-    #debug("sortclause: $sortclause");
+    #b::debug("sortclause: $sortclause");
     #debug("sortclassname: {$this->sortclassname}");
 
     // reorder numbers to not have gaps in numeration
@@ -57,7 +59,7 @@ trait webapp
     $first = min($origin, $destination);
     $last = max($origin, $destination);
     $direction = $destination <=> $origin;   // 1 = move up, -1 = move down
-    #\booosta\debug("sort: $origin -> $destination in id $this->id");
+    #b::debug("sort: $origin -> $destination in id $this->id");
 
     $this->DB->query("update `{$this->sortclassname}` set ordernum='-1' where $sortclause and ordernum='$origin'");
     $this->DB->query("update `{$this->sortclassname}` set ordernum=ordernum-$direction where $sortclause and ordernum between $first and $last");

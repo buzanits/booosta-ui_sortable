@@ -13,9 +13,10 @@ trait webapp
 
   protected $sortclassname, $sortclause;
 
+
   protected function webappinit_ui_sortable()
   {
-    $this->sortclassname = $this->sortclassname ?? $this->editclassname ?? $this->classname ?? $this->name;
+    $this->sortclassname = $this->VAR['table2sort'] ?? $this->sortclassname ?? $this->editclassname ?? $this->classname ?? $this->name;
   }
 
   protected function preparse_ui_sortable()
@@ -44,7 +45,7 @@ trait webapp
     $sortclause = $sortclause ?: '1';
     #debug("this->sortclause: $this->sortclause");
     #b::debug("sortclause: $sortclause");
-    #debug("sortclassname: {$this->sortclassname}");
+    #b::debug("sortclassname: {$this->sortclassname}");
 
     // reorder numbers to not have gaps in numeration
     $i = 1;
@@ -56,6 +57,14 @@ trait webapp
 
     $origin = intval($this->VAR['origin']) + 1;   // ordernum is 1 based
     $destination = intval($this->VAR['destination']) + 1;
+
+    if(is_array($_SESSION['ui_sortable_ordernums_map'][$this->name])):
+      $origin = $_SESSION['ui_sortable_ordernums_map'][$this->name][$origin];
+      $destination = $_SESSION['ui_sortable_ordernums_map'][$this->name][$destination];
+
+      unset($_SESSION['ui_sortable_ordernums_map'][$this->name]);
+    endif;
+
     $first = min($origin, $destination);
     $last = max($origin, $destination);
     $direction = $destination <=> $origin;   // 1 = move up, -1 = move down

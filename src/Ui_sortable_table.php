@@ -5,6 +5,7 @@ namespace booosta\ui_sortable;
 class Ui_sortable_table extends \booosta\tablelister\Tablelister
 {
   protected $ajaxurl;
+  protected $table2sort;
 
   public function __construct($data, $tabletags = true, $use_datatable = false, $ajaxurl = null)
   {
@@ -26,6 +27,7 @@ class Ui_sortable_table extends \booosta\tablelister\Tablelister
   }
 
   public function set_ajaxurl($ajaxurl) { $this->ajaxurl = $ajaxurl; }
+  public function set_table2sort($table2sort) { $this->table2sort = $table2sort; }
 
   public function get_html()
   {
@@ -37,8 +39,10 @@ class Ui_sortable_table extends \booosta\tablelister\Tablelister
   {
     if($this->ajaxurl):
       $separator = strstr($this->ajaxurl, '?') ? '&' : '?';
+      $table2sort = $this->table2sort ? "table2sort=$this->table2sort{$separator}" : '';
+
       $ajax = "[0].addEventListener('sortupdate', function(e) 
-               { $.ajax('$this->ajaxurl{$separator}origin=' + e.detail.origin.index + '&destination=' + e.detail.destination.index); })";
+               { $.ajax('$this->ajaxurl{$separator}{$table2sort}origin=' + e.detail.origin.index + '&destination=' + e.detail.destination.index); }); ";
     endif;
 
     $placeholder = $this->t('Drop row here');

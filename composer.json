@@ -24,6 +24,6 @@
     "require": {
         "php": ">=8.0.0",
         "npm-asset/html5sortable": "^0.13",
-        "booosta/ui": "dev-master"
+        "booosta/ui": "^4.0"
     }
 }

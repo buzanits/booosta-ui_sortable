@@ -39,6 +39,7 @@ trait webapp
 
   protected function action_sort_sortable()
   {
+    #b::debug('in sort');
     #b::debug("sortclause: $this->sortclause");
     $sortclause = str_replace('{id}', $this->id, $this->sortclause);
     $sortclause = preg_replace_callback('/\{([A-Za-z0-9_]+)\}/', function($m) { return $this->replace_sortvar($m[1]); }, $sortclause);
@@ -48,21 +49,22 @@ trait webapp
     #b::debug("sortclassname: {$this->sortclassname}");
 
     // reorder numbers to not have gaps in numeration
+    /*
     $i = 1;
     $lines = $this->DB->query_value_set("select id from `{$this->sortclassname}` where $sortclause order by ordernum, id");
     foreach($lines as $line):
       $this->DB->query("update `{$this->sortclassname}` set ordernum='$i' where id='$line'");
       $i++;
     endforeach;
+    */
 
     $origin = intval($this->VAR['origin']) + 1;   // ordernum is 1 based
     $destination = intval($this->VAR['destination']) + 1;
 
+    #b::debug($_SESSION['ui_sortable_ordernums_map']);
     if(is_array($_SESSION['ui_sortable_ordernums_map'][$this->name])):
-      $origin = $_SESSION['ui_sortable_ordernums_map'][$this->name][$origin];
-      $destination = $_SESSION['ui_sortable_ordernums_map'][$this->name][$destination];
-
-      unset($_SESSION['ui_sortable_ordernums_map'][$this->name]);
+      $origin = $_SESSION['ui_sortable_ordernums_map'][$this->name][$origin] ?: 0;
+      $destination = $_SESSION['ui_sortable_ordernums_map'][$this->name][$destination] ?: 0;
     endif;
 
     $first = min($origin, $destination);
@@ -73,6 +75,9 @@ trait webapp
     $this->DB->query("update `{$this->sortclassname}` set ordernum='-1' where $sortclause and ordernum='$origin'");
     $this->DB->query("update `{$this->sortclassname}` set ordernum=ordernum-$direction where $sortclause and ordernum between $first and $last");
     $this->DB->query("update `{$this->sortclassname}` set ordernum='$destination' where $sortclause and ordernum='-1'");
+    #b::debug("update `{$this->sortclassname}` set ordernum='-1' where $sortclause and ordernum='$origin'");
+    #b::debug("update `{$this->sortclassname}` set ordernum=ordernum-$direction where $sortclause and ordernum between $first and $last");
+    #b::debug("update `{$this->sortclassname}` set ordernum='$destination' where $sortclause and ordernum='-1'");
 
     \booosta\ajax\Ajax::print_response('result', '');
     $this->no_output = true;
